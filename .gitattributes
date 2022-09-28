@@ -1,0 +1,1 @@
+prebuilt/images/ubuntu-20.04-server-cloudimg-arm64.img.qcow2 filter=lfs diff=lfs merge=lfs -text

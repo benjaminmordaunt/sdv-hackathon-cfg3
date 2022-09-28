@@ -1,0 +1,3 @@
+[submodule "meta-ewaol"]
+	path = meta-ewaol
+	url = https://gitlab.com/Linaro/ewaol/meta-ewaol.git
