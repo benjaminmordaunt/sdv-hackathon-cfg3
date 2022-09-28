@@ -14,6 +14,19 @@ repos:
     refspec: kirkstone
     path: layers/meta-raspberrypi
 
+  meta-ewaol:
+    url: https://git.gitlab.arm.com/ewaol/meta-ewaol.git
+    refspec: kirkstone-dev
+    path: layers/meta-ewaol
+    layers:
+      meta-ewaol-distro:
+      meta-ewaol-tests:
+
+  includes:
+    - kas/ewaol/ewaol.yml
+    - repo: meta-ewaol
+      file: meta-ewaol-config/kas/virtualization.yml
+
 local_conf_header:
   meta-hackathon: |
     ENABLE_UART = "1"
