@@ -5,6 +5,9 @@
 
 header:
   version: 11
+  includes:
+    - repo: meta-ewaol
+      file: meta-ewaol-config/kas/virtualization.yml
 
 machine: raspberrypi4-64
 
@@ -22,19 +25,12 @@ repos:
       meta-ewaol-distro:
       meta-ewaol-tests:
 
-  includes:
-    - kas/ewaol/ewaol.yml
-    - repo: meta-ewaol
-      file: meta-ewaol-config/kas/virtualization.yml
-
 local_conf_header:
   meta-hackathon: |
     ENABLE_UART = "1"
     RPI_EXTRA_CONFIG += "\ndtoverlay=disable-bt"
 
     CMDLINE_DEBUG += " cgroup_memory=1 cgroup_enable=memory"
-
-    PREBUILT_GUEST_VM_INSTANCES = "1"
 
     # Prebuilt VM instance 1 (Ubuntu 20.04.5 for Muto and other network services)
     # Handled by ubuntu-xenguest recipe
