@@ -12,6 +12,10 @@ header:
 machine: raspberrypi4-64
 
 repos:
+  meta-ewaol-hackathon:
+    layers:
+      meta-ewaol-hackathon:
+
   meta-raspberrpi:
     url: https://github.com/agherzan/meta-raspberrypi.git
     refspec: kirkstone

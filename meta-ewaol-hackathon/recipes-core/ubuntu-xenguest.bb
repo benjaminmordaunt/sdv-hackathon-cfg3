@@ -15,7 +15,7 @@ LIC_FILES_CHKSUM = "\
     "
 
 SRC_URI:append = " \
-    https://raw.githubusercontent.com/benmordaunt/sdv-hackathon-cfg3/main/xencfg/ewaol-guest-vm.conf;sha256sum=aed324d95e79ad4613c1612fcc23e2fe7f5a9d6351258c160c1b02fa88e89038\
+    https://raw.githubusercontent.com/benmordaunt/sdv-hackathon-cfg3/main/xencfg/ubuntu-xenguest.conf;sha256sum=6f40504fe6a7e981fe475f3b73bfdaa229bef8aa079c9df476dacea594028e00\
     https://github.com/benmordaunt/sdv-hackathon-cfg3/raw/main/prebuilt/images/ubuntu-20.04-server-cloudimg-arm64.img.qcow2;sha256sum=21b0a51a0d71251be409f7061cefd98045a0d8cacdf5f64a94d6ccbcace0f4ad\
 "
 
