@@ -1,0 +1,28 @@
+# Raspberry Pi 4 configuration for the Eclipse SDV hackathon.
+# 
+# Combines the standard RPi4 BSP with a configuration offering variables used by the 
+# EWAOL distribution. Namely, defines a single pre-built DomU, with Ubuntu 20.04.5 LTS.
+
+header:
+  version: 11
+
+machine: raspberrypi4-64
+
+repos:
+  meta-raspberrpi:
+    url: https://github.com/agherzan/meta-raspberrypi.git
+    refspec: kirkstone
+    path: layers/meta-raspberrypi
+
+local_conf_header:
+  meta-hackathon: |
+    ENABLE_UART = "1"
+    RPI_EXTRA_CONFIG += "\ndtoverlay=disable-bt"
+
+    CMDLINE_DEBUG += " cgroup_memory=1 cgroup_enable=memory"
+
+    PREBUILT_GUEST_VM_INSTANCES = "1"
+
+    # Prebuilt VM instance 1 (Ubuntu 20.04.5 for Muto and other network services)
+    PREBUILT_VM1_CFG_SRC = "https://raw.githubusercontent.com/benmordaunt/sdv-hackathon-cfg3/main/xencfg/ewaol-guest-vm.conf;sha256sum=aed324d95e79ad4613c1612fcc23e2fe7f5a9d6351258c160c1b02fa88e89038"
+    PREBUILT_VM1_DISK_SRC = "https://github.com/benmordaunt/sdv-hackathon-cfg3/raw/main/prebuilt/images/ubuntu-20.04-server-cloudimg-arm64.img.qcow2;sha256sum=21b0a51a0d71251be409f7061cefd98045a0d8cacdf5f64a94d6ccbcace0f4ad"
