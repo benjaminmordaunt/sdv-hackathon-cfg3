@@ -4,6 +4,9 @@
 # Namely, the prebuilt-guest-vm-package will always fail when there is not a separate kernel image
 # and rootfs. However, in many "cloud bundle"-style images, such as those for Ubuntu by Canonical,
 # the kernel is bundled directly under /boot in the rootfs.
+#
+# Somewhat confusingly, it's easiest to bypass EWAOL's VM management completely, and just install
+# a Xen configuration to ${D}${sysconfdir}/xen/auto
 
 SUMMARY = "This recipe provides an EWAOL Xen Guest VM configuration for Ubuntu 20.04.5 LTS"
 LICENSE = "MIT"
@@ -26,6 +29,8 @@ do_compile[noexec] = "1"
 do_install() {
     CFG_NAME="ubuntu-xenguest.conf"
     DISK_NAME="ubuntu-20.04-server-cloudimg-arm64.img.qcow2"
+    DISK_DST="${datadir}/guest-vms/ubuntu-xenguest/ubuntu-20.04-server-cloudimg-arm64.img.qcow2"
+    DISK_DIRNAME=$(dirname ${DISK_DST})
 
     install -d ${D}${sysconfdir}/xen/auto
     install -Dm 0640 ${WORKDIR}/${CFG_NAME} ${D}${sysconfdir}/xen/auto/${CFG_NAME}
