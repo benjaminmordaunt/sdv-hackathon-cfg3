@@ -18,8 +18,10 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install kas
-        run: pip install kas
+      - name: Install kas and dependencies
+        run: |
+          pip install kas
+          sudo apt install diffstat zstd
         
       - name: Perform build
         run: |
