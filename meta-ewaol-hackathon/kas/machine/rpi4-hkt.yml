@@ -39,6 +39,8 @@ local_conf_header:
     # Prebuilt VM instance 1 (Ubuntu 20.04.5 for Muto and other network services)
     # Handled by ubuntu-xenguest recipe
     
-    # EWAOL image excludes some Xen kernel modules from image.
-    # If they are built using =m in our kernel conf, we probably want them in the image.
-    IMAGE_INSTALL += "kernel-modules"
+    # Because we can't mandate layer order when using kas, letting
+    # meta-ewaol insert the xen and virtualization DISTRO_FEATURES
+    # is insufficent to guarantee these flags are observed by meta-raspberrypi (or others).
+    # Repeat them here as local.conf is parsed before layer.confs.
+    DISTRO_FEATURES:append = " virtualization xen"
