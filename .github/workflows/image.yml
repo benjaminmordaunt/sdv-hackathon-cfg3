@@ -21,7 +21,7 @@ jobs:
       - name: Install kas and dependencies
         run: |
           pip install kas
-          sudo apt install diffstat zstd
+          sudo apt-get install -y diffstat zstd
         
       - name: Perform build
         run: |
