@@ -20,13 +20,14 @@ jobs:
            
        - name: Create droplet for job
          run: |
-           doctl compute droplet create sdv-image-build-droplet --region lon1 --image ubuntu-20-04-x64 --size s-4vcpu-8gb
-           doctl compute volume create sdv-image-build-volume --region lon1 --size 150GiB
-           doctl compute volume-action attach sdv-image-build-volume sdv-image-build-droplet
+           doctl compute droplet create sdv-image-build-droplet --region lon1 --image ubuntu-20-04-x64 --size s-4vcpu-8gb --interactive false
+           doctl compute volume create sdv-image-build-volume --region lon1 --size 150GiB --interactive false
+           doctl compute volume-action attach sdv-image-build-volume sdv-image-build-droplet --interactive false
            
        - name: Teardown droplet for job
+         if: always()
          run: |
-           doctl compute volume-action detach sdv-image-build-volume sdv-image-build-droplet
-           doctl compute volume delete sdv-image-build-volume
-           doctl compute droplet delete sdv-image-build-droplet
+           doctl compute volume-action detach sdv-image-build-volume sdv-image-build-droplet --interactive false
+           doctl compute volume delete sdv-image-build-volume --interactive false
+           doctl compute droplet delete sdv-image-build-droplet --interactive false
            
