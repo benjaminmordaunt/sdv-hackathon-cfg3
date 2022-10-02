@@ -6,7 +6,7 @@
 trigger:
 - main
 
-pool: pipelineagentspool
+pool: 'Yocto Build Pool'
 
 steps:
 - script: echo Hello, world!
