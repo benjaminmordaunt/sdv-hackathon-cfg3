@@ -13,17 +13,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-
-      - name: Install kas and dependencies
-        run: |
-          pip install kas
-          sudo apt-get install -y diffstat zstd
-        
-      - name: Perform build
-        run: |
-          mkdir build && cd build
-          kas build ../meta-ewaol-hackathon/kas/machine/rpi4-hkt.yml
+       - name: Install doctl
+         uses: digitalocean/action-doctl@v2
+         with:
+           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+           
+       - name: Create droplet for job
+         run: |
+           doctl compute droplet create sdv_image_build_droplet --region lon1 --image ubuntu-20-04-x64 --size s-4vcpu-8gb
+           doctl compute volume create sdv_image_build_volume --region lon1 --size 150GiB
+           doctl compute volume-action attach sdv_image_build_volume sdv_image_build_project
+           
+       - name: Teardown droplet for job
+         run: |
+           doctl compute volume-action detach sdv_image_build_volume sdv_image_build_droplet
+           doctl compute volume delete sdv_image_build_volume
+           doctl compute droplet delete sdv_image_build_droplet
+           
