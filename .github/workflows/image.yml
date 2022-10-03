@@ -44,9 +44,9 @@ jobs:
              sleep 5
            done
            ssh -i ~/.ssh/droplet-${{ github.run_id }} root@`doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false` " \
-             apt-get update && apt-get install -y build-essential python3-pip python3 git ; \
+             apt-get update && apt-get install -y build-essential python3-pip python3 chrpath diffstat zstd git ; \
              pip install kas ; \
-             cd /mnt/b* ; \
+             cd /mnt/buildvolumetmp_${{ github.run_id }} ; \
              git clone https://github.com/benmordaunt/sdv-hackathon-cfg3.git -b main ; \
              cd sdv-hackathon-cfg3 ; \
              kas build meta-ewaol-hackathon/kas/machine/rpi4-hkt.yml \
