@@ -21,21 +21,21 @@ jobs:
        # Create droplet and volumes
        - name: Create droplet for job
          run: |
-           doctl compute droplet create sdvimagebuilddroplet-${{ github.run_id }} --region lon1 --image ubuntu-20-04-x64 --size s-4vcpu-8gb --interactive=false --wait=true
+           echo "DROPLET_ID=$(doctl compute droplet create sdvimagebuilddroplet-${{ github.run_id }} --region lon1 --image ubuntu-20-04-x64 --size s-4vcpu-8gb --interactive=false --wait=true --format=ID --no-header=true)" >> $GITHUB_ENV
            
        - name: Create volume
          run: |
-           echo 'VOLUME_ID=$(doctl compute volume create buildvolumetmp-${{ github.run_id }} --region lon1 --size 150GiB --interactive=false --fs-type=ext4 --fs-label=bld --format=ID --no-header=true)' >> $GITHUB_ENV
+           echo "VOLUME_ID=$(doctl compute volume create buildvolumetmp-${{ github.run_id }} --region lon1 --size 150GiB --interactive=false --fs-type=ext4 --fs-label=bld --format=ID --no-header=true)" >> $GITHUB_ENV
            
        - name: Attach volume
          run: |
-           doctl compute volume-action attach $VOLUME_ID `doctl compute droplet get sdvimagebuilddroplet-${{ github.run_id }} --format=ID --no-header=true` --interactive=false --wait=true
+           doctl compute volume-action attach $VOLUME_ID $DROPLET_ID --interactive=false --wait=true
            
        # Teardown droplet and volumes
        - name: Detach volume from droplet
          if: always()
          run: |
-           doctl compute volume-action detach $VOLUME_ID `doctl compute droplet get sdvimagebuilddroplet-${{ github.run_id }} --format=ID --no-header=true` --interactive=false --wait=true
+           doctl compute volume-action detach $VOLUME_ID $DROPLET_ID --interactive=false --wait=true
        
        - name: Delete volume
          if: always()
@@ -45,5 +45,5 @@ jobs:
        - name: Delete droplet
          if: always()
          run: |
-           doctl compute droplet delete sdvimagebuilddroplet-${{ github.run_id }} --interactive=false --force
+           doctl compute droplet delete $DROPLET_ID --interactive=false --force
            
