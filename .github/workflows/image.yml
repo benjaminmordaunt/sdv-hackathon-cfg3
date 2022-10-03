@@ -40,6 +40,7 @@ jobs:
        - name: Run whoami on Droplet
          run: |
            ssh -i ~/.ssh/droplet-${{ github.run_id }} root@`doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false` 'whoami'
+           until !!; do sleep 5 ; done
        
        # Teardown droplet and volumes
        - name: Detach volume from droplet
