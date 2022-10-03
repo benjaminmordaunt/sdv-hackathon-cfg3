@@ -37,14 +37,9 @@ jobs:
            doctl compute volume-action attach $VOLUME_ID $DROPLET_ID --interactive=false --wait=true
            
        # Run commands on droplet
-       - name: Hello world!
-         uses: appleboy/ssh-action@master
-         with:
-           host: $(doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false)
-           username: root
-           key: $(cat ~/.ssh/droplet-${{ github.run_id }})
-           port: 21
-           script: whoami
+       - name: Run whoami on Droplet
+         run: |
+           ssh root@`doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false` 'whoami'
        
        # Teardown droplet and volumes
        - name: Detach volume from droplet
