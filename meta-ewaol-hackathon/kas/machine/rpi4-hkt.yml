@@ -23,7 +23,7 @@ repos:
 
   meta-ewaol:
     url: https://git.gitlab.arm.com/ewaol/meta-ewaol.git
-    refspec: kirkstone-dev
+    refspec: v1.0
     path: layers/meta-ewaol
     layers:
       meta-ewaol-distro:
