@@ -26,7 +26,7 @@ jobs:
            
        - name: Create droplet for job
          run: |
-           echo "DROPLET_ID=$(doctl compute droplet create sdvimagebuilddroplet-${{ github.run_id }} --region lon1 --image ubuntu-20-04-x64 --size s-4vcpu-8gb --ssh-keys $SSH_KEY --interactive=false --wait=true --format=ID --no-header=true)" >> $GITHUB_ENV
+           echo "DROPLET_ID=$(doctl compute droplet create sdvimagebuilddroplet-${{ github.run_id }} --region lon1 --image ubuntu-20-04-x64 --size c-16 --ssh-keys $SSH_KEY --interactive=false --wait=true --format=ID --no-header=true)" >> $GITHUB_ENV
            
        - name: Create volume
          run: |
