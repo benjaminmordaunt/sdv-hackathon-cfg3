@@ -43,7 +43,7 @@ jobs:
              echo 'Waiting for host to come online...'
              sleep 5
            done
-           ssh -i ~/.ssh/droplet-${{ github.run_id }} root@`doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false` " \
+           ssh -i ~/.ssh/droplet-${{ github.run_id }} -o ServerAliveInterval=60 root@`doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false` " \
              sleep 1m ; \
              apt-get update ; \
              apt-get install -y build-essential python3-pip python3 chrpath diffstat zstd git ; \
