@@ -39,10 +39,11 @@ jobs:
        # Run commands on droplet
        - name: Run lsblk on droplet
          run: |
-           ssh-keyscan `doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false` >> ~/.ssh/known_hosts
-           until ssh -i ~/.ssh/droplet-${{ github.run_id }} root@`doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false` 'lsblk'; do
+           until ssh-keyscan `doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false` >> ~/.ssh/known_hosts; do
+             echo 'Waiting for host to come online...'
              sleep 5
            done
+           ssh -i ~/.ssh/droplet-${{ github.run_id }} root@`doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false` 'lsblk'
        
        # Teardown droplet and volumes
        - name: Detach volume from droplet
