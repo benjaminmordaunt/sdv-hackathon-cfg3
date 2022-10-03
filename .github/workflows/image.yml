@@ -22,7 +22,7 @@ jobs:
        - name: Generate SSH keypair for droplet access
          run: |
            ssh-keygen -t rsa -f ~/.ssh/droplet-${{ github.run_id }} -P ""
-           echo "FINGERPRINT=$(doctl compute ssh-key create droplet-${{ github.run_id }} --public-key \"$(cat ~/.ssh/droplet-${{ github.run_id }}.pub)\" --format=FingerPrint --no-header=true --interactive=false)" >> $GITHUB_ENV
+           echo "FINGERPRINT=$(doctl compute ssh-key create droplet-${{ github.run_id }} --public-key $(cat ~/.ssh/droplet-${{ github.run_id }}.pub) --format=FingerPrint --no-header=true --interactive=false)" >> $GITHUB_ENV
            
        - name: Create droplet for job
          run: |
