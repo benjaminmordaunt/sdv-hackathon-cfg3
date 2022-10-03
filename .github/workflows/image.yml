@@ -21,31 +21,31 @@ jobs:
        # Create droplet and volumes
        - name: Create droplet for job
          run: |
-           doctl compute droplet create sdvimagebuilddroplet-${{ github.run_attempt }} --region lon1 --image ubuntu-20-04-x64 --size s-4vcpu-8gb --interactive=false --wait=true
+           doctl compute droplet create sdvimagebuilddroplet-${{ github.run_id }} --region lon1 --image ubuntu-20-04-x64 --size s-4vcpu-8gb --interactive=false --wait=true
            
        - name: Create volume
          run: |
-           doctl compute volume create buildvolumetmp-${{ github.run_attempt }} --region lon1 --size 150GiB --interactive=false
+           doctl compute volume create buildvolumetmp-${{ github.run_id }} --region lon1 --size 150GiB --interactive=false
            # Cannot yet wait for a volume to be created (tracking at: https://github.com/digitalocean/doctl/issues/1268) - wait a minute
            sleep 1m
            
        - name: Attach volume
          run: |
-           doctl compute volume-action attach buildvolumetmp-${{ github.run_attempt }} `doctl compute droplet get sdvimagebuilddroplet-${{ github.run_attempt }} --format=ID --no-header` --interactive=false --wait=true
+           doctl compute volume-action attach buildvolumetmp-${{ github.run_id }} `doctl compute droplet get sdvimagebuilddroplet-${{ github.run_id }} --format=ID --no-header` --interactive=false --wait=true
            
        # Teardown droplet and volumes
        - name: Detach volume from droplet
          if: always()
          run: |
-           doctl compute volume-action detach buildvolumetmp-${{ github.run_attempt }} `doctl compute droplet get sdvimagebuilddroplet-${{ github.run_attempt }} --format=ID --no-header` --interactive=false --wait=true
+           doctl compute volume-action detach buildvolumetmp-${{ github.run_id }} `doctl compute droplet get sdvimagebuilddroplet-${{ github.run_id }} --format=ID --no-header` --interactive=false --wait=true
        
        - name: Delete volume
          if: always()
          run: |
-           doctl compute volume delete buildvolumetmp-${{ github.run_attempt }} --interactive=false --force
+           doctl compute volume delete buildvolumetmp-${{ github.run_id }} --interactive=false --force
            
        - name: Delete droplet
          if: always()
          run: |
-           doctl compute droplet delete sdvimagebuilddroplet-${{ github.run_attempt }} --interactive=false --force
+           doctl compute droplet delete sdvimagebuilddroplet-${{ github.run_id }} --interactive=false --force
            
