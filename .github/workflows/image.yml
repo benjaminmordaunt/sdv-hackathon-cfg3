@@ -19,9 +19,14 @@ jobs:
            token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
            
        # Create droplet and volumes
+       - name: Generate SSH keypair for droplet access
+         run: |
+           ssh-keygen -t rsa -f ~/.ssh/droplet-${{ github.run_id }} -P ""
+           echo "FINGERPRINT=$(doctl compute ssh-key create droplet-${{ github.run_id }} --public-key \"$(cat ~/.ssh/droplet-${{ github.run_id }}.pub)\" --format=FingerPrint --no-header=true --interactive=false)" >> $GITHUB_ENV
+           
        - name: Create droplet for job
          run: |
-           echo "DROPLET_ID=$(doctl compute droplet create sdvimagebuilddroplet-${{ github.run_id }} --region lon1 --image ubuntu-20-04-x64 --size s-4vcpu-8gb --interactive=false --wait=true --format=ID --no-header=true)" >> $GITHUB_ENV
+           echo "DROPLET_ID=$(doctl compute droplet create sdvimagebuilddroplet-${{ github.run_id }} --region lon1 --image ubuntu-20-04-x64 --size s-4vcpu-8gb --ssh-keys $FINGERPRINT --interactive=false --wait=true --format=ID --no-header=true)" >> $GITHUB_ENV
            
        - name: Create volume
          run: |
@@ -31,6 +36,16 @@ jobs:
          run: |
            doctl compute volume-action attach $VOLUME_ID $DROPLET_ID --interactive=false --wait=true
            
+       # Run commands on droplet
+       - name: Hello world!
+         uses: appleboy/ssh-action@master
+         with:
+           host: $(doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false)
+           username: root
+           key: $(cat ~/.ssh/droplet-${{ github.run_id }})
+           port: 21
+           script: whoami
+       
        # Teardown droplet and volumes
        - name: Detach volume from droplet
          if: always()
