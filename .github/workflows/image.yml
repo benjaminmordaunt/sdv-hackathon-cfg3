@@ -37,7 +37,7 @@ jobs:
            doctl compute volume-action attach $VOLUME_ID $DROPLET_ID --interactive=false --wait=true
            
        # Run commands on droplet
-       - name: Run lsblk on droplet
+       - name: Run commands on droplet
          run: |
            until ssh-keyscan `doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false` >> ~/.ssh/known_hosts; do
              echo 'Waiting for host to come online...'
@@ -45,8 +45,8 @@ jobs:
            done
            ssh -i ~/.ssh/droplet-${{ github.run_id }} root@`doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false` " \
              apt-get install -y build-essential python3-pip python3 git ; \
-             pip3 install kas ; \
-             cd /mnt/buildvolumetmp-${{ github.run_id }} ; \
+             pip install kas ; \
+             cd /mnt/b* ; \
              git clone ${{ github.repositoryUrl }} -b main ; \
              cd sdv-hackathon-cfg3 ; \
              kas build meta-ewaol-hackathon/kas/machine/rpi4-hkt.yml \
