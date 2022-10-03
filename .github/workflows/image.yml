@@ -48,8 +48,7 @@ jobs:
              apt-get update ; \
              apt-get install -y build-essential python3-pip python3 chrpath diffstat zstd git ; \
              pip install kas ; \
-             adduser blduser ; \
-             chpasswd blduser:blduser ; \
+             adduser --disabled-login --gecos 'Build User' blduser ; \
              chown -R blduser /mnt/buildvolumetmp_${{ github.run_id }} ; \
              su blduser -c ' \
                cd /mnt/buildvolumetmp_${{ github.run_id }} ; \
