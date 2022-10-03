@@ -26,6 +26,8 @@ jobs:
        - name: Create volume
          run: |
            doctl compute volume create buildvolumetmp-${{ github.run_attempt }} --region lon1 --size 150GiB --interactive=false
+           # Cannot yet wait for a volume to be created (tracking at: https://github.com/digitalocean/doctl/issues/1268) - wait a minute
+           sleep 1m
            
        - name: Attach volume
          run: |
