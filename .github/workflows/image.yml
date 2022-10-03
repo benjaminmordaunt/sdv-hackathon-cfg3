@@ -21,7 +21,7 @@ jobs:
        # Create droplet and volumes
        - name: Create droplet for job
          run: |
-           doctl compute droplet create sdvimagebuilddroplet --region lon1 --image ubuntu-20-04-x64 --size s-4vcpu-8gb --interactive=false
+           doctl compute droplet create sdvimagebuilddroplet --region lon1 --image ubuntu-20-04-x64 --size s-4vcpu-8gb --interactive=false --wait=true
            
        - name: Create volume
          run: |
@@ -29,7 +29,7 @@ jobs:
            
        - name: Attach volume
          run: |
-           doctl compute volume-action attach buildvolumetmp sdvimagebuilddroplet --interactive=false
+           doctl compute volume-action attach buildvolumetmp `doctl compute droplet get sdvimagebuilddroplet --format=ID --no-header` --interactive=false --wait=true
            
        # Teardown droplet and volumes
        - name: Detach volume from droplet
