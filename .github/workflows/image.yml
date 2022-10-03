@@ -37,10 +37,10 @@ jobs:
            doctl compute volume-action attach $VOLUME_ID $DROPLET_ID --interactive=false --wait=true
            
        # Run commands on droplet
-       - name: Run whoami on Droplet
+       - name: Run lsblk on droplet
          run: |
            ssh-keyscan `doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false` >> ~/.ssh/known_hosts
-           until ssh -i ~/.ssh/droplet-${{ github.run_id }} root@`doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false` 'whoami'; do
+           until ssh -i ~/.ssh/droplet-${{ github.run_id }} root@`doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false` 'lsblk'; do
              sleep 5
            done
        
