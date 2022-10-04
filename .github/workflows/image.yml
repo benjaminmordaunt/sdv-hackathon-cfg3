@@ -78,6 +78,11 @@ jobs:
          run: |
            doctl compute volume-action detach $VOLUME_ID $DROPLET_ID --interactive=false --wait=true
        
+       - name: Snapshot volume
+         if: always()
+         run: |
+           doctl compute volume snapshot $VOLUME_ID --snapshot-name=sdvbuildsnapshot-${{ github.run_id }}
+       
        - name: Delete volume
          if: always()
          run: |
