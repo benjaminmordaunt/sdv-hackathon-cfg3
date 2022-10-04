@@ -64,7 +64,7 @@ jobs:
        # Copy artifacts back to local VM and commit
        - name: 'Copy image to local VM'
          run: |
-           scp -i ~/.ssh/droplet-${{ github.run_id }} root@`doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false`:/mnt/buildvolumetmp_3181284903/build/tmp_virtualization/deploy/images/raspberrypi4-64/ewaol-virtualization-image-raspberrypi4-64.rpi-sdimg .
+           scp -i ~/.ssh/droplet-${{ github.run_id }} root@`doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false`:/mnt/buildvolumetmp_3181284903/sdv-hackathon-cfg3/build/tmp_virtualization/deploy/images/raspberrypi4-64/ewaol-virtualization-image-raspberrypi4-64.rpi-sdimg .
        
        - name: 'Upload image as artifact'
          uses: actions/upload-artifact@v3
