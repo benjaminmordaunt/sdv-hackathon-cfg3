@@ -45,6 +45,7 @@ jobs:
              apt-get update ; \
              apt-get install -y build-essential python3-pip python3 chrpath diffstat zstd git ; \
              pip install kas ; \
+             groupadd --gid 1234 blduser ; \
              adduser --disabled-password --gecos 'Build User' blduser --uid 1234 --gid 1234 ; \
              passwd -d blduser ; \
              git clone https://github.com/benmordaunt/sdv-hackathon-cfg3.git -b main ; \
