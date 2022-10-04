@@ -50,8 +50,8 @@ jobs:
              apt-get update ; \
              apt-get install -y build-essential python3-pip python3 chrpath diffstat zstd git ; \
              pip install kas ; \
-             export UID_TGT=\`stat -c %u /mnt/buildvolumetmp_3181284903\` ; \
-             export GID_TGT=\`stat -c %g /mnt/buildvolumetmp_3181284903\` ; \
+             export UID_TGT=\$(stat -c %u /mnt/buildvolumetmp_3181284903) ; \
+             export GID_TGT=\$(stat -c %g /mnt/buildvolumetmp_3181284903) ; \
              adduser --disabled-password --gecos 'Build User' --uid $UID_TGT --gid $GID_TGT blduser ; \
              passwd -d blduser ; \
              su blduser -c ' \
