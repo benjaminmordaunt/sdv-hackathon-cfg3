@@ -50,7 +50,7 @@ jobs:
              apt-get update ; \
              apt-get install -y build-essential python3-pip python3 chrpath diffstat zstd git ; \
              pip install kas ; \
-             adduser --disabled-password --gecos 'Build User' -u $(stat -c %u /mnt/buildvolumetmp_3181284903) -g $(stat -c %g /mnt/buildvolumetmp_3181284903) blduser ; \
+             adduser --disabled-password --gecos 'Build User' -u `stat -c %u /mnt/buildvolumetmp_3181284903` -g `stat -c %g /mnt/buildvolumetmp_3181284903` blduser ; \
              passwd -d blduser ; \
              su blduser -c ' \
                cd /mnt/buildvolumetmp_3181284903 ; \
