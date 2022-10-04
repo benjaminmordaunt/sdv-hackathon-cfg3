@@ -30,7 +30,7 @@ jobs:
            
        - name: Create volume
          run: |
-           echo "VOLUME_ID=$(doctl compute volume create buildvolumetmp-${{ github.run_id }} --region lon1 --size 150GiB --interactive=false --fs-type=ext4 --fs-label=bld --format=ID --no-header=true)" >> $GITHUB_ENV
+           echo "VOLUME_ID=$(doctl compute volume create buildvolumetmp-${{ github.run_id }} --snapshot sdvbuildsnapshot-3181284903 --size 150GiB --interactive=false --fs-type=ext4 --fs-label=bld --format=ID --no-header=true)" >> $GITHUB_ENV
            
        - name: Attach volume
          run: |
@@ -62,14 +62,14 @@ jobs:
        # Copy artifacts back to local VM and commit
        - name: 'Copy image to local VM'
          run: |
-           scp -i ~/.ssh/droplet-${{ github.run_id }} root@`doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false`:/mnt/buildvolumetmp_${{ github.run_id }}/build/tmp_virtualization/deploy/images/raspberrypi4-64/*sdimg .
+           scp -i ~/.ssh/droplet-${{ github.run_id }} root@`doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false`:/mnt/buildvolumetmp_${{ github.run_id }}/build/tmp_virtualization/deploy/images/raspberrypi4-64/ewaol-virtualization-image-raspberrypi4-64.rpi-sdimg .
        
        - name: 'Upload image as artifact'
          uses: actions/upload-artifact@v3
          with:
            name: hackathon-image.rpi-sdimg
            path: |
-             *sdimg
+             ewaol-virtualization-image-raspberrypi4-64.rpi-sdimg
            retention-days: 30
        
        # Teardown droplet and volumes
