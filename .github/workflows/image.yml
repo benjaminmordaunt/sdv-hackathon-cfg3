@@ -54,6 +54,7 @@ jobs:
              mount -o defaults,nofail,discard,noatime /dev/disk/by-id/scsi-0DO_Volume_sdv-sstate-cache sdv-hackathon-cfg3/build/sstate-cache ; \
              mount -o defaults,nofail,discard,noatime /dev/disk/by-id/scsi-0DO_Volume_sdv-downloads sdv-hackathon-cfg3/build/downloads ; \
              chown -R blduser:blduser sdv-hackathon-cfg3 ; \
+             chmod -R 755 sdv-hackathon-cfg3 ; \
              su blduser -c ' \
                cd sdv-hackathon-cfg3 ; \
                kas build meta-ewaol-hackathon/kas/machine/rpi4-hkt.yml \
