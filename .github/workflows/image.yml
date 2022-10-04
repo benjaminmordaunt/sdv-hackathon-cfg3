@@ -28,13 +28,10 @@ jobs:
          run: |
            echo "DROPLET_ID=$(doctl compute droplet create sdvimagebuilddroplet-${{ github.run_id }} --region lon1 --image ubuntu-20-04-x64 --size c-16 --ssh-keys $SSH_KEY --interactive=false --wait=true --format=ID --no-header=true)" >> $GITHUB_ENV
            
-       - name: Create volume
+       - name: Attach volumes for sstate-cache and downloads
          run: |
-           echo "VOLUME_ID=$(doctl compute volume create buildvolumetmp-${{ github.run_id }} --snapshot $(doctl compute snapshot list sdvbuildsnapshot-3181284903 --format=ID --no-header=true) --size 150GiB --interactive=false --fs-type=ext4 --fs-label=bld --format=ID --no-header=true)" >> $GITHUB_ENV
-           
-       - name: Attach volume
-         run: |
-           doctl compute volume-action attach $VOLUME_ID $DROPLET_ID --interactive=false --wait=true
+           doctl compute volume-action attach 54e756f9-4403-11ed-9513-0a58ac14c02c $DROPLET_ID --interactive=false --wait=true
+           doctl compute volume-action attach 4a004f2b-4403-11ed-9513-0a58ac14c02c $DROPLET_ID --interactive=false --wait=true
            
        # Run commands on droplet
        - name: Run commands on droplet
@@ -45,17 +42,19 @@ jobs:
            done
            ssh -i ~/.ssh/droplet-${{ github.run_id }} -o ServerAliveInterval=60 root@`doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false` " \
              sleep 1m ; \
-             mkdir /mnt/buildvolumetmp_3181284903 ; \
-             mount -o defaults,nofail,discard,noatime /dev/sda /mnt/buildvolumetmp_3181284903 ; \
              apt-get update ; \
              apt-get install -y build-essential python3-pip python3 chrpath diffstat zstd git ; \
              pip install kas ; \
-             adduser --disabled-password --gecos 'Build User' --uid \$(stat -c %u /mnt/buildvolumetmp_3181284903) --gid \$(stat -c %g /mnt/buildvolumetmp_3181284903) blduser ; \
+             adduser --disabled-password --gecos 'Build User' blduser --uid 1234 --gid 1234 ; \
              passwd -d blduser ; \
+             git clone https://github.com/benmordaunt/sdv-hackathon-cfg3.git -b main ; \
+             mkdir -p sdv-hackathon-cfg3/build/sstate-cache ; \
+             mkdir -p sdv-hackathon-cfg3/build/downloads ; \
+             mount -o defaults,nofail,discard,noatime /dev/disk/by-id/scsi-0DO_Volume_sdv-sstate-cache sdv-hackathon-cfg3/build/sstate-cache ; \
+             mount -o defaults,nofail,discard,noatime /dev/disk/by-id/scsi-0DO_Volume_sdv-downloads sdv-hackathon-cfg3/build/downloads ; \
+             chown -R 1234:1234 sdv-hackathon-cfg3 ; \
              su blduser -c ' \
-               cd /mnt/buildvolumetmp_3181284903 ; \
                cd sdv-hackathon-cfg3 ; \
-               git pull ; \
                kas build meta-ewaol-hackathon/kas/machine/rpi4-hkt.yml \
              ' \
            "
@@ -77,17 +76,8 @@ jobs:
        - name: Detach volume from droplet
          if: always()
          run: |
-           doctl compute volume-action detach $VOLUME_ID $DROPLET_ID --interactive=false --wait=true
-       
-       #- name: Snapshot volume
-         #if: always()
-         #run: |
-           #doctl compute volume snapshot $VOLUME_ID --snapshot-name=sdvbuildsnapshot-${{ github.run_id }}
-       
-       - name: Delete volume
-         if: always()
-         run: |
-           doctl compute volume delete $VOLUME_ID --interactive=false --force
+           doctl compute volume-action detach 54e756f9-4403-11ed-9513-0a58ac14c02c $DROPLET_ID --interactive=false --wait=true
+           doctl compute volume-action detach 4a004f2b-4403-11ed-9513-0a58ac14c02c $DROPLET_ID --interactive=false --wait=true
            
        - name: Delete droplet
          if: always()
