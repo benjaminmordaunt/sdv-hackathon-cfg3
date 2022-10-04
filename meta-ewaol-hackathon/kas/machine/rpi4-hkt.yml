@@ -44,3 +44,7 @@ local_conf_header:
     # is insufficent to guarantee these flags are observed by meta-raspberrypi (or others).
     # Repeat them here as local.conf is parsed before layer.confs.
     DISTRO_FEATURES:append = " virtualization xen"
+    
+    # xen-tools does not install xen-tools-pygrub by default.
+    # We need this to boot our Ubuntu DomU.
+    IMAGE_INSTALL:append = " xen-tools-pygrub"

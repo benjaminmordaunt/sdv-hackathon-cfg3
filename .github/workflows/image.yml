@@ -50,9 +50,8 @@ jobs:
              apt-get update ; \
              apt-get install -y build-essential python3-pip python3 chrpath diffstat zstd git ; \
              pip install kas ; \
-             adduser --disabled-password --gecos 'Build User' blduser ; \
+             adduser --disabled-password --gecos 'Build User' --uid \$(stat -c %u /mnt/buildvolumetmp_3181284903) --gid \$(stat -c %g /mnt/buildvolumetmp_3181284903) blduser ; \
              passwd -d blduser ; \
-             chown -R blduser /mnt/buildvolumetmp_3181284903 ; \
              su blduser -c ' \
                cd /mnt/buildvolumetmp_3181284903 ; \
                cd sdv-hackathon-cfg3 ; \
@@ -80,10 +79,10 @@ jobs:
          run: |
            doctl compute volume-action detach $VOLUME_ID $DROPLET_ID --interactive=false --wait=true
        
-       - name: Snapshot volume
-         if: always()
-         run: |
-           doctl compute volume snapshot $VOLUME_ID --snapshot-name=sdvbuildsnapshot-${{ github.run_id }}
+       #- name: Snapshot volume
+         #if: always()
+         #run: |
+           #doctl compute volume snapshot $VOLUME_ID --snapshot-name=sdvbuildsnapshot-${{ github.run_id }}
        
        - name: Delete volume
          if: always()
