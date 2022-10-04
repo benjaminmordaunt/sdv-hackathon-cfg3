@@ -30,7 +30,7 @@ jobs:
            
        - name: Create volume
          run: |
-           echo "VOLUME_ID=$(doctl compute volume create buildvolumetmp-${{ github.run_id }} --snapshot sdvbuildsnapshot-3181284903 --size 150GiB --interactive=false --fs-type=ext4 --fs-label=bld --format=ID --no-header=true)" >> $GITHUB_ENV
+           echo "VOLUME_ID=$(doctl compute volume create buildvolumetmp-${{ github.run_id }} --snapshot $(doctl compute snapshot list --format=ID --no-header=true) sdvbuildsnapshot-3181284903 --size 150GiB --interactive=false --fs-type=ext4 --fs-label=bld --format=ID --no-header=true)" >> $GITHUB_ENV
            
        - name: Attach volume
          run: |
