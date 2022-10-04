@@ -45,16 +45,16 @@ jobs:
            done
            ssh -i ~/.ssh/droplet-${{ github.run_id }} -o ServerAliveInterval=60 root@`doctl compute droplet get $DROPLET_ID --format=PublicIPv4 --no-header=true --interactive=false` " \
              sleep 1m ; \
-             mkdir /mnt/buildvolumetmp_${{ github.run_id }} ; \
-             mount -o defaults,nofail,discard,noatime /dev/sda /mnt/buildvolumetmp_${{ github.run_id }} ; \
+             mkdir /mnt/buildvolumetmp_3181284903 ; \
+             mount -o defaults,nofail,discard,noatime /dev/sda /mnt/buildvolumetmp_3181284903 ; \
              apt-get update ; \
              apt-get install -y build-essential python3-pip python3 chrpath diffstat zstd git ; \
              pip install kas ; \
              adduser --disabled-password --gecos 'Build User' blduser ; \
              passwd -d blduser ; \
-             chown -R blduser /mnt/buildvolumetmp_${{ github.run_id }} ; \
+             chown -R blduser /mnt/buildvolumetmp_3181284903 ; \
              su blduser -c ' \
-               cd /mnt/buildvolumetmp_${{ github.run_id }} ; \
+               cd /mnt/buildvolumetmp_3181284903 ; \
                cd sdv-hackathon-cfg3 ; \
                git pull ; \
                kas build meta-ewaol-hackathon/kas/machine/rpi4-hkt.yml \
