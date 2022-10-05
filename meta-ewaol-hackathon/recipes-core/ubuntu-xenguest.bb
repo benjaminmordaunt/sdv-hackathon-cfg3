@@ -23,8 +23,6 @@ inherit allarch
 inherit features_check
 REQUIRED_DISTRO_FEATURES += "ewaol-virtualization"
 
-DEPENDS += "bzip2-native"
-
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
@@ -33,9 +31,6 @@ do_install() {
     DISK_NAME="focal-server-cloudimg-arm64.raw.img"
     DISK_DST="${datadir}/guest-vms/ubuntu-xenguest/focal-server-cloudimg-arm64.img"
     DISK_DIRNAME=$(dirname ${DISK_DST})
-
-    # Decompress Ubuntu image
-    bzip2 -d ${WORKDIR}/focal-server-cloudimg-arm64.raw.img.bz2
 
     install -d ${D}${sysconfdir}/xen/auto
     install -Dm 0640 ${WORKDIR}/${CFG_NAME} ${D}${sysconfdir}/xen/auto/${CFG_NAME}
