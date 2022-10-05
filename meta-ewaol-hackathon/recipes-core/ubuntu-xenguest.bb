@@ -35,7 +35,7 @@ do_install() {
     DISK_DIRNAME=$(dirname ${DISK_DST})
 
     # Decompress Ubuntu image
-    bzip2 -d focal-server-cloudimg-arm64.raw.img.bz2
+    bzip2 -d ${WORKDIR}/focal-server-cloudimg-arm64.raw.img.bz2
 
     install -d ${D}${sysconfdir}/xen/auto
     install -Dm 0640 ${WORKDIR}/${CFG_NAME} ${D}${sysconfdir}/xen/auto/${CFG_NAME}
