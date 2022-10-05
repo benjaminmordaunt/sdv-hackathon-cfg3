@@ -15,8 +15,8 @@ LIC_FILES_CHKSUM = "\
     "
 
 SRC_URI:append = " \
-    https://raw.githubusercontent.com/benmordaunt/sdv-hackathon-cfg3/main/xencfg/ubuntu-xenguest.conf;sha256sum=a1a0a74d2397223f4b4ee7d30474513676e98f57b635a0072726a814800db172\
-    https://github.com/benmordaunt/sdv-hackathon-cfg3/raw/main/prebuilt/images/ubuntu-20.04-server-cloudimg-arm64.img.qcow2;sha256sum=21b0a51a0d71251be409f7061cefd98045a0d8cacdf5f64a94d6ccbcace0f4ad\
+    https://raw.githubusercontent.com/benmordaunt/sdv-hackathon-cfg3/main/xencfg/ubuntu-xenguest.conf;sha256sum=d86dca7794d41b50fc557ab2da3b7974fc456250136c36758176017e8fc8eb3a\
+    https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-arm64.img;sha256sum=b8176161962c4f54e59366444bb696e92406823f643ed7bdcdd3d15d38dc0d53\
 "
 
 inherit allarch
@@ -28,8 +28,8 @@ do_compile[noexec] = "1"
 
 do_install() {
     CFG_NAME="ubuntu-xenguest.conf"
-    DISK_NAME="ubuntu-20.04-server-cloudimg-arm64.img.qcow2"
-    DISK_DST="${datadir}/guest-vms/ubuntu-xenguest/ubuntu-20.04-server-cloudimg-arm64.img.qcow2"
+    DISK_NAME="focal-server-cloudimg-arm64.img"
+    DISK_DST="${datadir}/guest-vms/ubuntu-xenguest/focal-server-cloudimg-arm64.img"
     DISK_DIRNAME=$(dirname ${DISK_DST})
 
     install -d ${D}${sysconfdir}/xen/auto
