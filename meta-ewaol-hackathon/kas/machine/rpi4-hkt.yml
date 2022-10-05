@@ -48,3 +48,14 @@ local_conf_header:
     # xen-tools does not install xen-tools-pygrub by default.
     # We need this to boot our Ubuntu DomU.
     IMAGE_INSTALL:append = " xen-tools-pygrub"
+
+    # EWAOL requires greater memory in the control domain.
+    # (configuring this considering use of a 4GB Raspberry Pi 4)
+    # ! CHANGEME !
+    RPI_DOM0_MEM := "1024M"
+
+    # EWAOL guest VM memory. Reducing from the default of 6GB.
+    # (configuring this considering use of a 4GB Raspberry Pi 4)
+    # ! CHANGEME !
+    EWAOL_GUEST_VM1_MEMORY_SIZE := "1024"
+

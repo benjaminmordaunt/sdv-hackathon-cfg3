@@ -16,21 +16,26 @@ LIC_FILES_CHKSUM = "\
 
 SRC_URI:append = " \
     https://raw.githubusercontent.com/benmordaunt/sdv-hackathon-cfg3/main/xencfg/ubuntu-xenguest.conf;sha256sum=05a83b586e5dc4e538eb8d3517ef6c4fd4135860d1a9cbff6d3f4af7554fe065\
-    https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-arm64.img;sha256sum=b8176161962c4f54e59366444bb696e92406823f643ed7bdcdd3d15d38dc0d53\
+    https://github.com/benmordaunt/sdv-hackathon-cfg3/raw/main/prebuilt/images/focal-server-cloudimg-arm64.raw.img.bz2;sha256sum=c6c0bd96f291864d50681d9fc34a4766b48ac2902e3d383525e0e88eb25c8964\
 "
 
 inherit allarch
 inherit features_check
 REQUIRED_DISTRO_FEATURES += "ewaol-virtualization"
 
+DEPENDS += "bzip2-native"
+
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
 do_install() {
     CFG_NAME="ubuntu-xenguest.conf"
-    DISK_NAME="focal-server-cloudimg-arm64.img"
+    DISK_NAME="focal-server-cloudimg-arm64.raw.img"
     DISK_DST="${datadir}/guest-vms/ubuntu-xenguest/focal-server-cloudimg-arm64.img"
     DISK_DIRNAME=$(dirname ${DISK_DST})
+
+    # Decompress Ubuntu image
+    bzip2 -d focal-server-cloudimg-arm64.raw.img.bz2
 
     install -d ${D}${sysconfdir}/xen/auto
     install -Dm 0640 ${WORKDIR}/${CFG_NAME} ${D}${sysconfdir}/xen/auto/${CFG_NAME}
