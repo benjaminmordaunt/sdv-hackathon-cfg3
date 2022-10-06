@@ -15,13 +15,15 @@ LIC_FILES_CHKSUM = "\
     "
 
 SRC_URI:append = " \
-    https://raw.githubusercontent.com/benmordaunt/sdv-hackathon-cfg3/main/xencfg/ubuntu-xenguest.conf;sha256sum=05a83b586e5dc4e538eb8d3517ef6c4fd4135860d1a9cbff6d3f4af7554fe065\
+    https://raw.githubusercontent.com/benmordaunt/sdv-hackathon-cfg3/main/xencfg/ubuntu-xenguest.conf;sha256sum=208fbefe3410b79296d51116a266db2bb718ae5db58ec2c4761000f910603530\
     https://github.com/benmordaunt/sdv-hackathon-cfg3/raw/main/prebuilt/images/focal-server-cloudimg-arm64.raw.img.bz2;sha256sum=c6c0bd96f291864d50681d9fc34a4766b48ac2902e3d383525e0e88eb25c8964\
 "
 
 inherit allarch
 inherit features_check
 REQUIRED_DISTRO_FEATURES += "ewaol-virtualization"
+
+DEPENDS += "dosfstools-native mtools-native"
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
@@ -31,12 +33,30 @@ do_install() {
     DISK_NAME="focal-server-cloudimg-arm64.raw.img"
     DISK_DST="${datadir}/guest-vms/ubuntu-xenguest/focal-server-cloudimg-arm64.img"
     DISK_DIRNAME=$(dirname ${DISK_DST})
-
+    
     install -d ${D}${sysconfdir}/xen/auto
     install -Dm 0640 ${WORKDIR}/${CFG_NAME} ${D}${sysconfdir}/xen/auto/${CFG_NAME}
 
     install -d ${D}${DISK_DIRNAME}
     install -Dm 0640 ${WORKDIR}/${DISK_NAME} ${D}${DISK_DST}
+    
+    if [[ -n "${HKT_UBUNTU_NOCLOUD}" ]]; then
+        SEED_DST=${DISK_DIRNAME}/focal-server-cloudimg-arm64-seed.img
+
+        echo -e "instance-id: bcx22-ubuntu\nlocal-hostname: bcx22-ubuntu" > ${WORKDIR}/meta-data
+	echo -e "#cloud-config\npassword: bcx22\nchpasswd: { expire: False }\nssh_pwauth: True\n" > ${WORKDIR}/user-data
+
+        truncate --size 2M ${WORKDIR}/seed.img
+	mkfs.vfat -n cidata ${WORKDIR}/seed.img
+
+	mcopy -oi ${WORKDIR}/seed.img ${WORKDIR}/user-data ${WORKDIR}/meta-data
+
+	install -Dm 0640 ${WORKDIR}/seed.img ${D}${SEED_DST}
+
+	sed -i 's/%%HKT_UBUNTU_NOCLOUD_SEED_IMAGE%%/, \'file:\/usr\/share\/guest-vms\/ubuntu-xenguest\/focal-server-cloudimg-arm64-seed.img,xvdb,r\'/' ${D}${sysconfdir}/xen/auto/${CFG_NAME}
+    else
+        sed -i 's/%%HKT_UBUNTU_NOCLOUD_SEED_IMAGE%%//' ${D}${sysconfdir}/xen/auto/${CFG_NAME}
+    fi
 }
 
 FILES:${PN} = "${datadir} ${sysconfdir}"
