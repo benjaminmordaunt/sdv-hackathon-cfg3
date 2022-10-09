@@ -16,7 +16,7 @@ LIC_FILES_CHKSUM = "\
 
 SRC_URI:append = " \
     https://raw.githubusercontent.com/benmordaunt/sdv-hackathon-cfg3/main/xencfg/ubuntu-xenguest.conf;sha256sum=208fbefe3410b79296d51116a266db2bb718ae5db58ec2c4761000f910603530\
-    https://github.com/benmordaunt/sdv-hackathon-cfg3/raw/main/prebuilt/images/focal-server-cloudimg-arm64.raw.img.bz2;sha256sum=c6c0bd96f291864d50681d9fc34a4766b48ac2902e3d383525e0e88eb25c8964\
+    https://cloud-images.ubuntu.com/focal/20221005/focal-server-cloudimg-arm64.img;sha256sum=5e8b8814419325d05acb62827515a13a3ce4e8572ad0e510c63301ab1e86d9f2\
 "
 
 inherit allarch
@@ -53,12 +53,10 @@ do_install() {
 
 	install -Dm 0640 ${WORKDIR}/seed.img ${D}${SEED_DST}
 
-	sed -i 's/%%HKT_UBUNTU_NOCLOUD_SEED_IMAGE%%/, \'file:\/usr\/share\/guest-vms\/ubuntu-xenguest\/focal-server-cloudimg-arm64-seed.img,xvdb,r\'/' ${D}${sysconfdir}/xen/auto/${CFG_NAME}
+	sed -i 's/%%HKT_UBUNTU_NOCLOUD_SEED_IMAGE%%/, \'format=raw, vdev=xvdb, access=rw, target=\/usr\/share\/guest-vms\/ubuntu-xenguest\/focal-server-cloudimg-arm64-seed.img\'/' ${D}${sysconfdir}/xen/auto/${CFG_NAME}
     else
         sed -i 's/%%HKT_UBUNTU_NOCLOUD_SEED_IMAGE%%//' ${D}${sysconfdir}/xen/auto/${CFG_NAME}
     fi
-
-    #  Ideally, 
 }
 
 FILES:${PN} = "${datadir} ${sysconfdir}"
