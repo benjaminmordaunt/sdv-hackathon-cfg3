@@ -57,6 +57,8 @@ do_install() {
     else
         sed -i 's/%%HKT_UBUNTU_NOCLOUD_SEED_IMAGE%%//' ${D}${sysconfdir}/xen/auto/${CFG_NAME}
     fi
+
+    #  Ideally, 
 }
 
 FILES:${PN} = "${datadir} ${sysconfdir}"

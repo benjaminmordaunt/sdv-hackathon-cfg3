@@ -32,7 +32,11 @@ The default EWAOL guest, (`EWAOL_GUEST_VM1`) is disabled.
 EDK2 UEFI Firmware (RPi4 platform) {
     Xen {
         EWAOL Dom0;
-	Ubuntu 20.04 Cloud DomU;
+	EDK2 UEFI Firmware (ArmVirtXen platform) {
+            GRUB2 bootloader {
+	        Ubuntu 20.04 Cloud DomU;
+            }
+	}
 	EDK2 UEFI Firmware (ArmVirtXen platform) {
 	    GRUB2 bootloader {
 	        Eclipse Leda DomU;
@@ -48,3 +52,10 @@ Eclipse Leda makes use of the RAUC update framework, which interacts with the bo
 While interaction between RAUC and Xen has not been verified as of yet, I do not foresee issues with integration. `xen,uefi-binary`
 will be pointed to a grub2-efi which should then operate as if Xen does not exist. However, we will need to make sure multiple
 xvda block devices are made available for the A/B rootfs switching feature.
+
+### Leda under EFI
+
+By default, Eclipse Leda depends on the U-Boot bootloader from `meta-raspberrypi`, which we are not using as the Raspberry Pi 4 has
+been configured with SystemReady SR UEFI firmware. We therefore expect to boot Leda using ArmVirtXen EFI. This maintains the ability
+to use GRUB2, and therefore the RAUC tooling. A new Kickstart file for building a grub2-efi-based `/boot` partition will therefore
+need to be created under `meta-leda`'s BSP layer. I imagine this will be closely related to the [existing configuration for x86 QEMU](https://github.com/eclipse-leda/meta-leda/blob/b738899c3e9b9f8b34e3b528266b9b97d13a739a/meta-leda-distro/wic/qemux86-grub-efi.wks).
