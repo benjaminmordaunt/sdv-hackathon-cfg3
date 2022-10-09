@@ -27,6 +27,8 @@ The default EWAOL guest, (`EWAOL_GUEST_VM1`) is disabled.
 ## Notes
 
 ### Boot Flow
+
+```
 EDK2 UEFI Firmware (RPi4 platform) {
     Xen {
         EWAOL Dom0;
@@ -38,6 +40,7 @@ EDK2 UEFI Firmware (RPi4 platform) {
         }
     }
 }
+```
 
 ### RAUC
 
