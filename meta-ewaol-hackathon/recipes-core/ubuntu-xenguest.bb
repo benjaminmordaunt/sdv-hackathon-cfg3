@@ -30,7 +30,7 @@ do_compile[noexec] = "1"
 
 do_install() {
     CFG_NAME="ubuntu-xenguest.conf"
-    DISK_NAME="focal-server-cloudimg-arm64.raw.img"
+    DISK_NAME="focal-server-cloudimg-arm64.img"
     DISK_DST="${datadir}/guest-vms/ubuntu-xenguest/focal-server-cloudimg-arm64.img"
     DISK_DIRNAME=$(dirname ${DISK_DST})
     
@@ -53,9 +53,9 @@ do_install() {
 
 	install -Dm 0640 ${WORKDIR}/seed.img ${D}${SEED_DST}
 
-	sed -i 's/%%HKT_UBUNTU_NOCLOUD_SEED_IMAGE%%/, \'format=raw, vdev=xvdb, access=rw, target=\/usr\/share\/guest-vms\/ubuntu-xenguest\/focal-server-cloudimg-arm64-seed.img\'/' ${D}${sysconfdir}/xen/auto/${CFG_NAME}
+	sed -i "s/%%HKT_UBUNTU_NOCLOUD_SEED_IMAGE%%/, 'format=raw, vdev=xvdb, access=rw, target=\/usr\/share\/guest-vms\/ubuntu-xenguest\/focal-server-cloudimg-arm64-seed.img'/" ${D}${sysconfdir}/xen/auto/${CFG_NAME}
     else
-        sed -i 's/%%HKT_UBUNTU_NOCLOUD_SEED_IMAGE%%//' ${D}${sysconfdir}/xen/auto/${CFG_NAME}
+        sed -i "s/%%HKT_UBUNTU_NOCLOUD_SEED_IMAGE%%//" ${D}${sysconfdir}/xen/auto/${CFG_NAME}
     fi
 }
 

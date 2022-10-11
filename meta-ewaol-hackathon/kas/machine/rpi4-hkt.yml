@@ -9,21 +9,21 @@ header:
     - repo: meta-ewaol
       file: meta-ewaol-config/kas/virtualization.yml
 
-machine: raspberrypi4-64
+machine: generic-arm64
 
 repos:
   meta-ewaol-hackathon:
     layers:
       meta-ewaol-hackathon:
 
-  meta-raspberrpi:
+  meta-raspberrypi:
     url: https://github.com/agherzan/meta-raspberrypi.git
     refspec: kirkstone
     path: layers/meta-raspberrypi
 
   meta-ewaol:
     url: https://git.gitlab.arm.com/ewaol/meta-ewaol.git
-    refspec: v1.0
+    refspec: kirkstone-dev
     path: layers/meta-ewaol
     layers:
       meta-ewaol-distro:
@@ -45,17 +45,13 @@ local_conf_header:
     # Repeat them here as local.conf is parsed before layer.confs.
     DISTRO_FEATURES:append = " virtualization xen"
     
-    # xen-tools does not install xen-tools-pygrub by default.
-    # We need this to boot our Ubuntu DomU.
-    IMAGE_INSTALL:append = " xen-tools-pygrub"
-
     # EWAOL requires greater memory in the control domain.
     # (configuring this considering use of a 4GB Raspberry Pi 4)
     # ! CHANGEME !
-    RPI_DOM0_MEM := "1024M"
+    EWAOL_CONTROL_VM_MEMORY_SIZE := "1024"
 
-    # EWAOL guest VM memory. Reducing from the default of 6GB.
+    # Disable default EWAOL guest VM.
     # (configuring this considering use of a 4GB Raspberry Pi 4)
     # ! CHANGEME !
-    EWAOL_GUEST_VM1_MEMORY_SIZE := "1024"
+    EWAOL_GUEST_VM_INSTANCES := "0"
 
