@@ -43,7 +43,7 @@ local_conf_header:
     # meta-ewaol insert the xen and virtualization DISTRO_FEATURES
     # is insufficent to guarantee these flags are observed by meta-raspberrypi (or others).
     # Repeat them here as local.conf is parsed before layer.confs.
-    DISTRO_FEATURES:append = " virtualization xen"
+    DISTRO_FEATURES:append = " virtualization xen k3s"
     
     # EWAOL requires greater memory in the control domain.
     # (configuring this considering use of a 4GB Raspberry Pi 4)
