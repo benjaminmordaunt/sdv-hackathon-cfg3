@@ -41,7 +41,7 @@ do_install() {
     install -d ${D}${DISK_DIRNAME}
     install -Dm 0640 ${WORKDIR}/${DISK_NAME} ${D}${DISK_DST}
     
-    if [[ -n "${HKT_UBUNTU_NOCLOUD}" ]]; then
+    if [[ "${HKT_UBUNTU_NOCLOUD}" == "True" ]]; then
         SEED_DST=${DISK_DIRNAME}/focal-server-cloudimg-arm64-seed.img
 
         echo -e "instance-id: bcx22-ubuntu\nlocal-hostname: bcx22-ubuntu" > ${WORKDIR}/meta-data
