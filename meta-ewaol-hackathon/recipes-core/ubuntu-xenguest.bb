@@ -24,6 +24,7 @@ inherit features_check
 REQUIRED_DISTRO_FEATURES += "ewaol-virtualization"
 
 DEPENDS += "dosfstools-native mtools-native"
+RDEPENDS:${PN} += "edk2-firmware"
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
