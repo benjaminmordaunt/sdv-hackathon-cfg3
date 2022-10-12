@@ -48,7 +48,7 @@ local_conf_header:
     # EWAOL requires greater memory in the control domain.
     # (configuring this considering use of a 4GB Raspberry Pi 4)
     # ! CHANGEME !
-    EWAOL_CONTROL_VM_MEMORY_SIZE := "1024"
+    RPI_DOM0_MEM := "1024M"
 
     # Disable default EWAOL guest VM.
     # (configuring this considering use of a 4GB Raspberry Pi 4)
