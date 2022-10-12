@@ -9,7 +9,7 @@ header:
     - repo: meta-ewaol
       file: meta-ewaol-config/kas/virtualization.yml
 
-machine: generic-arm64
+machine: raspberrypi4-64
 
 repos:
   meta-ewaol-hackathon:

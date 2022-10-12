@@ -1,5 +1,0 @@
-HKT_BSP_DYN_MACHINE_EXTRA_REQUIRE ?= ""
-HKT_BSP_DYN_MACHINE_EXTRA_REQUIRE:raspberrypi64 = "rpi64-extra-settings.inc"
-
-require ${HKT_BSP_DYN_MACHINE_EXTRA_REQUIRE}
-
