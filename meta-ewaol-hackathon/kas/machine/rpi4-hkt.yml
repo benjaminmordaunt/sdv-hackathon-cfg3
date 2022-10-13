@@ -59,4 +59,7 @@ local_conf_header:
     # (default: True)
     # ! CHANGEME !
     HKT_UBUNTU_NOCLOUD := "True"
+    
+    # Rollback a virtual/kernel change in meta-virtualization (see #3 @ lgirdk/meta-virtualization)
+    PREFERRED_PROVIDER_virtual/kernel = "linux-raspberrypi"
 
