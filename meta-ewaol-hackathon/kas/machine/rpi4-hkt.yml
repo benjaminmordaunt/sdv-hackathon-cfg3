@@ -63,3 +63,71 @@ local_conf_header:
     # Rollback a virtual/kernel change in meta-virtualization (see #3 @ lgirdk/meta-virtualization)
     PREFERRED_PROVIDER_virtual/kernel = "linux-raspberrypi"
 
+    # Restore lost kernel DT and DT overlays.
+    RPI_KERNEL_DEVICETREE_OVERLAYS = " \
+        overlays/overlay_map.dtb \
+        overlays/at86rf233.dtbo \
+        overlays/disable-bt.dtbo \
+        overlays/dwc2.dtbo \
+        overlays/gpio-ir.dtbo \
+        overlays/gpio-ir-tx.dtbo \
+        overlays/gpio-key.dtbo \
+        overlays/gpio-poweroff.dtbo \
+        overlays/gpio-shutdown.dtbo \
+        overlays/hifiberry-amp.dtbo \
+        overlays/hifiberry-dac.dtbo \
+        overlays/hifiberry-dacplus.dtbo \
+        overlays/hifiberry-digi.dtbo \
+        overlays/justboom-both.dtbo \
+        overlays/justboom-dac.dtbo \
+        overlays/justboom-digi.dtbo \
+        overlays/i2c-gpio.dtbo \
+        overlays/i2c-rtc.dtbo \
+        overlays/imx219.dtbo \
+        overlays/imx477.dtbo \
+        overlays/iqaudio-dac.dtbo \
+        overlays/iqaudio-dacplus.dtbo \
+        overlays/mcp2515-can0.dtbo \
+        overlays/mcp2515-can1.dtbo \
+        overlays/mcp3008.dtbo \
+        overlays/miniuart-bt.dtbo \
+        overlays/pitft22.dtbo \
+        overlays/pitft28-capacitive.dtbo \
+        overlays/pitft28-resistive.dtbo \
+        overlays/pitft35-resistive.dtbo \
+        overlays/pps-gpio.dtbo \
+        overlays/rpi-ft5406.dtbo \
+        overlays/rpi-poe.dtbo \
+        overlays/vc4-fkms-v3d.dtbo \
+        overlays/vc4-fkms-v3d-pi4.dtbo \
+        overlays/vc4-kms-v3d.dtbo \
+        overlays/vc4-kms-v3d-pi4.dtbo \
+        overlays/vc4-kms-dsi-7inch.dtbo \
+        overlays/w1-gpio.dtbo \
+        overlays/w1-gpio-pullup.dtbo \
+        overlays/wm8960-soundcard.dtbo \
+    "
+
+    RPI_KERNEL_DEVICETREE = " \
+        bcm2708-rpi-zero.dtb \
+        bcm2708-rpi-zero-w.dtb \
+        bcm2708-rpi-b.dtb \
+        bcm2708-rpi-b-rev1.dtb \
+        bcm2708-rpi-b-plus.dtb \
+        bcm2709-rpi-2-b.dtb \
+        bcm2710-rpi-2-b.dtb \
+        bcm2710-rpi-3-b.dtb \
+        bcm2710-rpi-3-b-plus.dtb \
+        bcm2710-rpi-zero-2.dtb \
+        bcm2711-rpi-4-b.dtb \
+        bcm2711-rpi-400.dtb \
+        bcm2708-rpi-cm.dtb \
+        bcm2710-rpi-cm3.dtb \
+        bcm2711-rpi-cm4.dtb \
+        bcm2711-rpi-cm4s.dtb \
+    "
+
+    KERNEL_DEVICETREE = " \
+        ${RPI_KERNEL_DEVICETREE} \
+        ${RPI_KERNEL_DEVICETREE_OVERLAYS} \
+    "
