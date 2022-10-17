@@ -50,7 +50,7 @@ do_install() {
         truncate --size 2M ${WORKDIR}/seed.img
 	mkfs.vfat -n cidata ${WORKDIR}/seed.img
 
-	mcopy -oi ${WORKDIR}/seed.img ${WORKDIR}/user-data ${WORKDIR}/meta-data
+	mcopy -oi ${WORKDIR}/seed.img ${WORKDIR}/user-data ${WORKDIR}/meta-data ::/
 
 	install -Dm 0640 ${WORKDIR}/seed.img ${D}${SEED_DST}
 
