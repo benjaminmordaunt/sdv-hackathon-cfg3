@@ -44,8 +44,8 @@ do_install() {
     if [ "${HKT_UBUNTU_NOCLOUD}" = "True" ]; then
         SEED_DST=${DISK_DIRNAME}/focal-server-cloudimg-arm64-seed.img
 
-        echo -e "instance-id: bcx22-ubuntu\nlocal-hostname: bcx22-ubuntu" > ${WORKDIR}/meta-data
-	echo -e "#cloud-config\npassword: bcx22\nchpasswd: { expire: False }\nssh_pwauth: True\n" > ${WORKDIR}/user-data
+        printf "instance-id: bcx22-ubuntu\nlocal-hostname: bcx22-ubuntu\n" > ${WORKDIR}/meta-data
+	printf "#cloud-config\npassword: bcx22\nchpasswd: { expire: False }\nssh_pwauth: True\n" > ${WORKDIR}/user-data
 
         truncate --size 2M ${WORKDIR}/seed.img
 	mkfs.vfat -n cidata ${WORKDIR}/seed.img
