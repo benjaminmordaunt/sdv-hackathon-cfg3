@@ -131,3 +131,7 @@ local_conf_header:
         ${RPI_KERNEL_DEVICETREE} \
         ${RPI_KERNEL_DEVICETREE_OVERLAYS} \
     "
+
+    # Disable all image generation except for rpi-sdimg
+    IMAGE_FSTYPES = ""
+
