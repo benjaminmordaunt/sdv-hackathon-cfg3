@@ -35,7 +35,7 @@ sleep 1
 part uuid mmc 0:2 rootfs_partuuid
 
 echo Add boot arguments for dom0
-setenv dom0_bootargs "console=hvc0 earlycon=xenboot debug root=PARTUUID=${rootfs_partuuid} rootwait"
+setenv dom0_bootargs "console=hvc0 earlycon=xenboot debug root=PARTUUID=${rootfs_partuuid} rootwait cgroup_memory=1 cgroup_enable=memory"
 fdt set /chosen xen,dom0-bootargs \"${dom0_bootargs}\"
 
 echo Load Xen into memory
